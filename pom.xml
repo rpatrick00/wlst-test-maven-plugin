@@ -16,8 +16,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.rhpatrick.mojo</groupId>
     <artifactId>wlst-test-maven-plugin</artifactId>
@@ -28,7 +27,7 @@
     <description>
         Runs unit tests written in WLST as part of a normal Maven build.
     </description>
-    <url></url>
+    <url>https://github.com/rpatrick00/wlst-test-maven-plugin</url>
     <inceptionYear>2018</inceptionYear>
 
     <licenses>
@@ -46,10 +45,10 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/rpatrick00/wlst-test-maven-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:rpatrick00/wlst-test-maven-plugin.git</developerConnection>
+        <connection>scm:git:https://github.com/rpatrick00/wlst-test-maven-plugin.git</connection>
+        <developerConnection>git@github.com:rpatrick00/wlst-test-maven-plugin.git</developerConnection>
         <url>https://github.com/rpatrick00/wlst-test-maven-plugin.git/tree/master</url>
-        <tag>HEAD</tag>
+        <tag>wlst-test-maven-plugin-1.0</tag>
     </scm>
 
     <properties>
