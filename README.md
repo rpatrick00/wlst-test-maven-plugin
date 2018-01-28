@@ -21,18 +21,18 @@ For example:
       <plugin>
         <groupId>io.rhpatrick.maven</groupId>
         <artifactId>wlst-test-maven-plugin</artifactId>
-	    <version>1.0</version>
-	    <executions>
-	      <execution>
-	        <id>run-wlst-tests</id>
-	        <goals>
-	          <goal>test</goal>
-	        </goals>
-	        <configuration>
-	          <wlstScriptDirectory>/opt/wls12213</wlstScriptDirectory>
-	        </configuration>
-	      </execution>
-	    </executions>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>run-wlst-tests</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <wlstScriptDirectory>/opt/wls12213</wlstScriptDirectory>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -47,22 +47,22 @@ The plugin supports customizing the WLST execution environment to meet most need
       <plugin>
         <groupId>io.rhpatrick.maven</groupId>
         <artifactId>wlst-test-maven-plugin</artifactId>
-	    <version>1.0</version>
-	    <executions>
-	      <execution>
-	        <id>run-wlst-tests</id>
-	        <goals>
-	          <goal>test</goal>
-	        </goals>
-	        <configuration>
-	          <wlstScriptDirectory>/opt/wls12213</wlstScriptDirectory>
-	          <wlstExtClasspath>
-	            <element>org.antlr:antlr4-runtime:jar</element>
-	            <element>${project.build.directory}/my-special-output-directory</element>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>run-wlst-tests</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <wlstScriptDirectory>/opt/wls12213</wlstScriptDirectory>
+              <wlstExtClasspath>
+                <element>org.antlr:antlr4-runtime:jar</element>
+                <element>${project.build.directory}/my-special-output-directory</element>
               </wlstExtClasspath>
-	        </configuration>
-	      </execution>
-	    </executions>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 ```
 
@@ -74,25 +74,25 @@ Custom environment variables and Java system properties can be specified using t
       <plugin>
         <groupId>io.rhpatrick.maven</groupId>
         <artifactId>wlst-test-maven-plugin</artifactId>
-	    <version>1.0</version>
-	    <executions>
-	      <execution>
-	        <id>run-wlst-tests</id>
-	        <goals>
-	          <goal>test</goal>
-	        </goals>
-	        <configuration>
-	          <wlstScriptDirectory>/opt/wls12213</wlstScriptDirectory>
-	          <environmentVariables>
-	            <DOMAIN_HOME>${project.build.directory}/domains/mydomain</DOMAIN_HOME>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>run-wlst-tests</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <wlstScriptDirectory>/opt/wls12213</wlstScriptDirectory>
+              <environmentVariables>
+                <DOMAIN_HOME>${project.build.directory}/domains/mydomain</DOMAIN_HOME>
               </environmentVariables>
               <systemProperties>
                 <myproject.logging.dir>${project.build.directory}/logs</myproject.logging.dir>
                 <myproject.logging.level>DEBUG</myproject.logging.level>
               </systemProperties>
-	        </configuration>
-	      </execution>
-	    </executions>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 ```
 
