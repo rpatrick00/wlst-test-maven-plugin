@@ -46,7 +46,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/rpatrick00/wlst-test-maven-plugin.git</connection>
-        <developerConnection>git@github.com:rpatrick00/wlst-test-maven-plugin.git</developerConnection>
+        <developerConnection>scm:git:https://git@github.com:rpatrick00/wlst-test-maven-plugin.git</developerConnection>
         <url>https://github.com/rpatrick00/wlst-test-maven-plugin.git/tree/master</url>
         <tag>wlst-test-maven-plugin-1.0</tag>
     </scm>
