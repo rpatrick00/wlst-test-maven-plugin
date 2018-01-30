@@ -23,6 +23,8 @@ import os
 from sets import Set
 import sys
 
+import wlstModule as wlst
+
 import java.lang.System as JavaSystem
 
 _WLST_TEST_PLUGIN_DEBUG_PROPERTY_NAME = 'wlst.test.plugin.debug'
@@ -57,13 +59,22 @@ def _compute_python_path(main_execute_dir, test_execute_dir, test_files):
         for test_file in test_files:
             path_list.append(os.path.dirname(test_file).replace('\\', '/'))
         path_list = list(Set(path_list))
-    else:
-        path_list = list()
 
     return path_list
 
+def _silence_wlst():
+    wlst.WLS.setLogToStdOut(False)
+    wlst.WLS.setShowLSResult(False)
+    wlst.WLS_ON.setlogToStandardOut(False)
+    wlst.WLS_ON.setHideDumpStack('true')
+    wlst.WLS.getCommandExceptionHandler().setMode(True)
+    wlst.WLS.getCommandExceptionHandler().setSilent(True)
+    return
+
 def main():
     global _debug
+
+    _silence_wlst()
 
     debug_value = JavaSystem.getProperty(_WLST_TEST_PLUGIN_DEBUG_PROPERTY_NAME, 'false')
     if debug_value == 'true':
