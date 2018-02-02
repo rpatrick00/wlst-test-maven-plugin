@@ -479,15 +479,9 @@ public class WLSTUnitTestMojo extends AbstractMojo {
     }
 
     private Element buildEnvironmentVariablesElement() throws MojoExecutionException {
-        if (isEmpty(environmentVariables) && isEmpty(wlstExtClasspath) && isEmpty(systemProperties)) {
-            Element[] empty = new Element[0];
-            return new Element(EXEC_PLUGIN_ENVIRONMENT_VARIABLES, empty);
-        }
-
-        int numEnvVars = environmentVariables.size();
-        if (!isEmpty(wlstExtClasspath)) {
-            numEnvVars++;
-        }
+        // Add one for the wlstExtClasspath which must always have the ${project.build.directory}
+        // even if the configuration element is empty
+        int numEnvVars = environmentVariables.size() + 1;
         if (!isEmpty(systemProperties)) {
             numEnvVars++;
         }
@@ -511,10 +505,7 @@ public class WLSTUnitTestMojo extends AbstractMojo {
             envVariablesArray[index++] = new Element(name, value);
         }
 
-        Element wlstExtClasspathElement = getWlstExtClasspathElement();
-        if (wlstExtClasspathElement != null) {
-            envVariablesArray[index++] = wlstExtClasspathElement;
-        }
+        envVariablesArray[index++] = getWlstExtClasspathElement();
 
         Element wlstPropertiesElement = getWlstPropertiesElement();
         if (wlstPropertiesElement != null) {
@@ -524,10 +515,6 @@ public class WLSTUnitTestMojo extends AbstractMojo {
     }
 
     private Element getWlstExtClasspathElement() {
-        if (isEmpty(wlstExtClasspath)) {
-            return null;
-        }
-
         List<String> result = new ArrayList<>(wlstExtClasspath.size() + 1);
         for (String wlstExtClasspathElement : wlstExtClasspath) {
             Matcher matcher = ARTIFACT_PROPERTY_PATTERN.matcher(wlstExtClasspathElement);
