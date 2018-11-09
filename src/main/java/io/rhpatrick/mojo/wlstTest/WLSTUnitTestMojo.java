@@ -264,13 +264,14 @@ public class WLSTUnitTestMojo extends AbstractMojo {
             throw new MojoFailureException(getMessage("WLSTTEST-003"));
         }
 
+        String argName = "wlstScriptDirectory";
         if (wlstScriptDirectory == null) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-004", "wlstScriptDirectory"));
+            throw new MojoExecutionException(getMessage("WLSTTEST-004", argName));
         } else if (!wlstScriptDirectory.isDirectory()) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-005", "wlstScriptDirectory",
+            throw new MojoExecutionException(getMessage("WLSTTEST-005", argName,
                                                         wlstScriptDirectory.getAbsolutePath()));
         } else if (!wlstScriptDirectory.exists()) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-006", "wlstScriptDirectory",
+            throw new MojoExecutionException(getMessage("WLSTTEST-006", argName,
                                                         wlstScriptDirectory.getAbsolutePath()));
         } else {
             wlstScript = getCanonicalFile(new File(wlstScriptDirectory, WLST_SCRIPT_NAME));
@@ -281,10 +282,11 @@ public class WLSTUnitTestMojo extends AbstractMojo {
             }
         }
 
+        argName = "wlstTestRootDirectory";
         if (wlstTestsRootDirectory == null) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-004", "wlstTestRootDirectory"));
+            throw new MojoExecutionException(getMessage("WLSTTEST-004", argName));
         } else if (!wlstTestsRootDirectory.isDirectory()) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-005", "wlstTestRootDirectory",
+            throw new MojoExecutionException(getMessage("WLSTTEST-005", argName,
                                                         wlstTestsRootDirectory.getAbsolutePath()));
         }
 
@@ -424,22 +426,21 @@ public class WLSTUnitTestMojo extends AbstractMojo {
      * @param testsDriverScript             the driver script
      * @param testsToRun                    the list of test files to run
      * @throws MojoExecutionException       if a configuration or execution environment-related error occurs
-     * @throws MojoFailureException         if an unexpected plugin or Maven error occurs
      */
     private void runTests(File testScriptsExecutionDirectory, File testsDriverScript, List<File> testsToRun)
-        throws MojoExecutionException, MojoFailureException {
+        throws MojoExecutionException {
         Plugin execPlugin = plugin(groupId(EXEC_PLUGIN_GROUP_ID), artifactId(EXEC_PLUGIN_ARTIFACT_ID),
                                    version(execMavenPluginVersion));
         String execGoal = goal(EXEC_PLUGIN_EXEC_GOAL);
         ExecutionEnvironment executionEnvironment = executionEnvironment(mavenProject, mavenSession, pluginManager);
 
-        Element environmentVariables = buildEnvironmentVariablesElement();
+        Element envVariables = buildEnvironmentVariablesElement();
         Element arguments = buildExecPluginArgumentsElement(testsDriverScript, testsToRun);
         Element workingDirectory =
             new Element(EXEC_PLUGIN_WORKING_DIRECTORY, testScriptsExecutionDirectory.getAbsolutePath());
         Element executable = new Element(EXEC_PLUGIN_EXECUTABLE, wlstScript.getAbsolutePath());
 
-        Xpp3Dom configuration = configuration(executable, workingDirectory, arguments, environmentVariables);
+        Xpp3Dom configuration = configuration(executable, workingDirectory, arguments, envVariables);
         executeMojo(execPlugin, execGoal, configuration, executionEnvironment);
     }
 
@@ -492,14 +493,15 @@ public class WLSTUnitTestMojo extends AbstractMojo {
             String name = entry.getKey();
             String value = entry.getValue();
 
+            String errorKey = "WLSTTEST-017";
             if (CLASSPATH_VARIABLE_NAME.equals(name)) {
-                throw new MojoExecutionException(getMessage("WLSTTEST-017",
+                throw new MojoExecutionException(getMessage(errorKey,
                                                             CLASSPATH_VARIABLE_NAME, "wlstExtClasspath"));
             } else if (WLST_EXT_CLASSPATH_VARIABLE_NAME.equals(name)) {
-                throw new MojoExecutionException(getMessage("WLSTTEST-017",
+                throw new MojoExecutionException(getMessage(errorKey,
                                                             WLST_EXT_CLASSPATH_VARIABLE_NAME, "wlstExtClasspath"));
             } else if (WLST_PROPERTIES_VARIABLE_NAME.equals(name)) {
-                throw new MojoExecutionException(getMessage("WLSTTEST-017",
+                throw new MojoExecutionException(getMessage(errorKey,
                                                             WLST_PROPERTIES_VARIABLE_NAME, "systemProperties"));
             }
             envVariablesArray[index++] = new Element(name, value);
@@ -611,10 +613,6 @@ public class WLSTUnitTestMojo extends AbstractMojo {
 
     private boolean isEmpty(File[] files) {
         return files == null || files.length == 0;
-    }
-
-    private boolean isEmpty(List<?> list) {
-        return list == null || list.isEmpty();
     }
 
     private boolean isEmpty(Map<?,?> map) {
