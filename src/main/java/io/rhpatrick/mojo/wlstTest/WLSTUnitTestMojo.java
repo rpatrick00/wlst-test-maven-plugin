@@ -117,6 +117,8 @@ public class WLSTUnitTestMojo extends AbstractMojo {
 
     private static final String WLST_TEST_DEBUG_PROPERTY_NAME = "wlst.test.plugin.debug";
 
+    private static final String WLST_DIR_NOT_SET = "NOT-SET";
+
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject mavenProject;
 
@@ -197,7 +199,7 @@ public class WLSTUnitTestMojo extends AbstractMojo {
     /**
      * The directory where wlst.sh/wlst.cmd is located.
      */
-    @Parameter(property = "wlstScriptDirectory")
+    @Parameter(property = "wlstScriptDirectory", required=true, defaultValue = WLST_DIR_NOT_SET)
     private File wlstScriptDirectory;
 
     /**
@@ -257,9 +259,6 @@ public class WLSTUnitTestMojo extends AbstractMojo {
      *                                failed to properly initialize the plugin variable
      */
     private void verifyArguments() throws MojoExecutionException, MojoFailureException {
-        if (wlstScriptDirectory == null) {
-            throw new MojoFailureException(getMessage("WLSTTEST-019"));
-        }
         if (mavenProject == null) {
             throw new MojoFailureException(getMessage("WLSTTEST-001"));
         } else if (mavenSession == null) {
@@ -269,7 +268,7 @@ public class WLSTUnitTestMojo extends AbstractMojo {
         }
 
         String argName = "wlstScriptDirectory";
-        if (wlstScriptDirectory == null) {
+        if (wlstScriptDirectory == null || WLST_DIR_NOT_SET.equals(wlstScriptDirectory.getName())) {
             throw new MojoExecutionException(getMessage("WLSTTEST-004", argName));
         } else if (!wlstScriptDirectory.isDirectory()) {
             throw new MojoExecutionException(getMessage("WLSTTEST-005", argName,
