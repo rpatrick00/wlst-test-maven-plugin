@@ -267,31 +267,8 @@ public class WLSTUnitTestMojo extends AbstractMojo {
             throw new MojoFailureException(getMessage("WLSTTEST-003"));
         }
 
-        String argName = "wlstScriptDirectory";
-        if (wlstScriptDirectory == null || WLST_DIR_NOT_SET.equals(wlstScriptDirectory.getName())) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-004", argName));
-        } else if (!wlstScriptDirectory.isDirectory()) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-005", argName,
-                                                        wlstScriptDirectory.getAbsolutePath()));
-        } else if (!wlstScriptDirectory.exists()) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-006", argName,
-                                                        wlstScriptDirectory.getAbsolutePath()));
-        } else {
-            wlstScript = getCanonicalFile(new File(wlstScriptDirectory, WLST_SCRIPT_NAME));
-            if (!wlstScript.exists()) {
-                throw new MojoExecutionException(getMessage("WLSTTEST-007", wlstScript.getAbsolutePath()));
-            } else if (!wlstScript.canExecute()) {
-                throw new MojoExecutionException(getMessage("WLSTTEST-008", wlstScript.getAbsolutePath()));
-            }
-        }
-
-        argName = "wlstTestRootDirectory";
-        if (wlstTestsRootDirectory == null) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-004", argName));
-        } else if (!wlstTestsRootDirectory.isDirectory()) {
-            throw new MojoExecutionException(getMessage("WLSTTEST-005", argName,
-                                                        wlstTestsRootDirectory.getAbsolutePath()));
-        }
+        verifyWlstScriptDirectoryArg();
+        verifyWlstTestRootDirectoryArg();
 
         if (isEmpty(mavenDependencyPluginVersion)) {
             throw new MojoExecutionException("WLSTTEST-009");
@@ -450,6 +427,36 @@ public class WLSTUnitTestMojo extends AbstractMojo {
     ///////////////////////////////////////////////////////////////////////////
     //                 Mojo-related Utility Functions                        //
     ///////////////////////////////////////////////////////////////////////////
+
+    private void verifyWlstScriptDirectoryArg() throws MojoExecutionException {
+        String argName = "wlstScriptDirectory";
+        if (wlstScriptDirectory == null || WLST_DIR_NOT_SET.equals(wlstScriptDirectory.getName())) {
+            throw new MojoExecutionException(getMessage("WLSTTEST-004", argName));
+        } else if (!wlstScriptDirectory.isDirectory()) {
+            throw new MojoExecutionException(getMessage("WLSTTEST-005", argName,
+                    wlstScriptDirectory.getAbsolutePath()));
+        } else if (!wlstScriptDirectory.exists()) {
+            throw new MojoExecutionException(getMessage("WLSTTEST-006", argName,
+                    wlstScriptDirectory.getAbsolutePath()));
+        } else {
+            wlstScript = getCanonicalFile(new File(wlstScriptDirectory, WLST_SCRIPT_NAME));
+            if (!wlstScript.exists()) {
+                throw new MojoExecutionException(getMessage("WLSTTEST-007", wlstScript.getAbsolutePath()));
+            } else if (!wlstScript.canExecute()) {
+                throw new MojoExecutionException(getMessage("WLSTTEST-008", wlstScript.getAbsolutePath()));
+            }
+        }
+    }
+
+    private void verifyWlstTestRootDirectoryArg() throws MojoExecutionException {
+        String argName = "wlstTestRootDirectory";
+        if (wlstTestsRootDirectory == null) {
+            throw new MojoExecutionException(getMessage("WLSTTEST-004", argName));
+        } else if (!wlstTestsRootDirectory.isDirectory()) {
+            throw new MojoExecutionException(getMessage("WLSTTEST-005", argName,
+                    wlstTestsRootDirectory.getAbsolutePath()));
+        }
+    }
 
     private List<File> gatherTestsToRun(File directory) {
         List<File> result = new ArrayList<>();
