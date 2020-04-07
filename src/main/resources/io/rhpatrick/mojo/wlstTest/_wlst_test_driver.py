@@ -102,5 +102,5 @@ def main():
     if not result.wasSuccessful():
         sys.exit(2)
 
-if __name__ == "main":
+if __name__ == "main" or __name__ == "__main__":
     main()
