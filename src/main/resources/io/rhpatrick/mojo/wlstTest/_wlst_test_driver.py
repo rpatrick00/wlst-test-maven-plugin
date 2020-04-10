@@ -31,9 +31,10 @@ _WLST_TEST_PLUGIN_DEBUG_PROPERTY_NAME = 'wlst.test.plugin.debug'
 _debug = False
 
 
-def run_tests(test_files):
+def run_tests(verbosity_level, test_files):
     """
     Execute the unit tests using the specified list of test files.
+    :param verbosity_level: output level for the test runner
     :param test_files: list of test files
     :return:
     """
@@ -46,7 +47,7 @@ def run_tests(test_files):
             print 'Adding test module %s defined by file %s to the test suite' % (filename_without_extension, test_file)
         suite.addTest(unittest.defaultTestLoader.loadTestsFromModule(test_module))
 
-    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    result = unittest.TextTestRunner(verbosity=verbosity_level).run(suite)
     return result
 
 def _compute_python_path(main_execute_dir, test_execute_dir, test_files):
@@ -82,15 +83,17 @@ def main():
         for index, arg in enumerate(sys.argv):
             print 'sys.argv[%s] = %s' % (str(index), arg)
 
-    # The first two arg are:
+    # The first three arg are:
     #     - the location of the python files being tested
     #     - the location of the python test files to be executed
+    #     - the verbosity level for the unittest suite
     #
     # All additional args are the test files to execute.
     #
     main_execute_dir = sys.argv[1]
     test_execute_dir = sys.argv[2]
-    test_files = list(sys.argv[3:])
+    test_verbosity = int(sys.argv[3])
+    test_files = list(sys.argv[4:])
     paths = _compute_python_path(main_execute_dir, test_execute_dir, test_files)
 
     for path in paths:
@@ -98,7 +101,7 @@ def main():
             print 'Appending %s to python path' % path
         sys.path.append(path)
 
-    result = run_tests(test_files)
+    result = run_tests(test_verbosity, test_files)
     if not result.wasSuccessful():
         sys.exit(2)
 
