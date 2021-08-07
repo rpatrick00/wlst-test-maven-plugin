@@ -82,7 +82,7 @@ public class WLSTUnitTestMojo extends AbstractMojo {
     private static final String EXEC_PLUGIN_ARGUMENTS = "arguments";
     private static final String EXEC_PLUGIN_WORKING_DIRECTORY = "workingDirectory";
     private static final String EXEC_PLUGIN_EXECUTABLE = "executable";
-    private static final int EXEC_PLUGIN_ARGS_LENGTH = 3;
+    private static final int EXEC_PLUGIN_ARGS_LENGTH = 4;
 
     private static final String RESOURCES_PLUGIN_GROUP_ID = "org.apache.maven.plugins";
     private static final String RESOURCES_PLUGIN_ARTIFACT_ID = "maven-resources-plugin";
@@ -214,6 +214,17 @@ public class WLSTUnitTestMojo extends AbstractMojo {
     @Parameter(property = "wlstTestsRootDirectory", defaultValue = "${project.basedir}/src/test/python")
     private File wlstTestsRootDirectory;
 
+    /**
+     * The verbosity level for messages from the unittest suite.  Default is verbose (2).
+     * <ul>
+     *   <li>0 (quiet): Outputs the total number of tests executed and the final result</li>
+     *   <li>1 (default): Outputs the same as 'quiet' plus a dot for every successful test or F for each failure</li>
+     *   <li>2 (verbose): Outputs the help string of every test and the each result</li>
+     * </ul>
+     */
+    @Parameter(property = "verbosity", defaultValue = "2")
+    private Integer verbosity;
+
     private File wlstScript;
     private boolean isDebug = false;
 
@@ -269,6 +280,7 @@ public class WLSTUnitTestMojo extends AbstractMojo {
 
         verifyWlstScriptDirectoryArg();
         verifyWlstTestRootDirectoryArg();
+        verifyVerbosityArg();
 
         if (isEmpty(mavenDependencyPluginVersion)) {
             throw new MojoExecutionException("WLSTTEST-009");
@@ -458,6 +470,13 @@ public class WLSTUnitTestMojo extends AbstractMojo {
         }
     }
 
+    private void verifyVerbosityArg() throws MojoExecutionException {
+        String argName = "verbosity";
+        // valid values for unittest verbosity are 0, 1, or 2
+        if (!(verbosity >= 0 && verbosity <= 2)) {
+            throw new MojoExecutionException(getMessage("WLSTTEST-019", argName, verbosity));
+        }
+    }
     private List<File> gatherTestsToRun(File directory) {
         List<File> result = new ArrayList<>();
         File[] directoryEntries = directory.listFiles();
@@ -590,6 +609,8 @@ public class WLSTUnitTestMojo extends AbstractMojo {
         File testPythonSourcesExecuteDirectory =
             getCanonicalFile(new File(mavenProject.getBasedir(), WLST_TEST_TEST_EXEC_DIR));
         argsArray[idx++] = new Element(EXEC_PLUGIN_ARGUMENT, testPythonSourcesExecuteDirectory.getAbsolutePath());
+
+        argsArray[idx++] = new Element(EXEC_PLUGIN_ARGUMENT, verbosity.toString());
 
         for (File testToRun : testsToRun) {
             argsArray[idx++] = new Element(EXEC_PLUGIN_ARGUMENT, testToRun.getAbsolutePath());
