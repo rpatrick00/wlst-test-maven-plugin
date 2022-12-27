@@ -137,23 +137,23 @@ public class WLSTUnitTestMojo extends AbstractMojo {
     /**
      * The version of the maven-dependency-plugin to use.
      */
-    @Parameter(property = "mavenDependencyPluginVersion", defaultValue = "3.0.2")
+    @Parameter(property = "mavenDependencyPluginVersion", defaultValue = "3.4.0")
     private String mavenDependencyPluginVersion;
 
     /**
      * The version of the exec-maven-plugin to use.
      */
-    @Parameter(property = "execMavenPluginVersion", defaultValue = "1.6.0")
+    @Parameter(property = "execMavenPluginVersion", defaultValue = "3.1.0")
     private String execMavenPluginVersion;
 
     /**
      * The version of the maven-resources-plugin to use.
      */
-    @Parameter(property = "mavenResourcePluginVersion", defaultValue = "3.0.2")
+    @Parameter(property = "mavenResourcesPluginVersion", defaultValue = "3.3.0")
     private String mavenResourcesPluginVersion;
 
     /**
-     * Controls whether or not WLST skips module scanning at startup.
+     * Controls whether WLST skips module scanning at startup.
      */
     @Parameter(property = "skipModuleScanning", defaultValue = "true")
     private boolean skipModuleScanning;
