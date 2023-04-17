@@ -80,8 +80,12 @@ def main():
     debug_value = JavaSystem.getProperty(_WLST_TEST_PLUGIN_DEBUG_PROPERTY_NAME, 'false')
     if debug_value == 'true':
         _debug = True
+        print 'WLST Test Driver arguments:'
         for index, arg in enumerate(sys.argv):
-            print 'sys.argv[%s] = %s' % (str(index), arg)
+            print '    sys.argv[%s] = %s' % (str(index), arg)
+        print '\nWLST Test Driver environment:'
+        for env_name, env_value in os.environ.iteritems():
+            print '    %s = %s' % (str(env_name), str(env_value))
 
     # The first three arg are:
     #     - the location of the python files being tested
